@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Piyush Padhan — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#090014;
+    --fg:#E0E0E0;
+    --card:#1a103c;
+    --magenta:#FF00FF;
+    --cyan:#00FFFF;
+    --orange:#FF9900;
+    --border:#2D1B4E;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--fg);
+    font-family:'Share Tech Mono', monospace;
+    overflow-x:hidden;
+    position:relative;
+  }
+  h1,h2,h3,.heading{font-family:'Orbitron', sans-serif;}
+  a{color:inherit; text-decoration:none;}
+
+  /* ---------- Background layers ---------- */
+  .grid-floor{
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      linear-gradient(transparent 95%, rgba(255,0,255,0.5) 95%),
+      linear-gradient(90deg, transparent 95%, rgba(255,0,255,0.5) 95%);
+    background-size:40px 40px;
+    transform:perspective(500px) rotateX(60deg) translateY(-100px) scale(2);
+    transform-origin:top center;
+    mask-image:linear-gradient(to bottom, transparent, black 40%, transparent 90%);
+    -webkit-mask-image:linear-gradient(to bottom, transparent, black 40%, transparent 90%);
+    opacity:0.35;
+  }
+  .sun{
+    position:fixed; top:-200px; left:50%; transform:translateX(-50%);
+    width:600px; height:600px; border-radius:50%;
+    background:linear-gradient(to bottom, var(--orange), var(--magenta));
+    filter:blur(100px); opacity:0.18; z-index:0; pointer-events:none;
+  }
+  .scanlines{
+    position:fixed; inset:0; z-index:50; pointer-events:none;
+    background:linear-gradient(rgba(18,16,20,0) 50%, rgba(0,0,0,0.25) 50%);
+    background-size:100% 4px;
+    mix-blend-mode:multiply;
+  }
+  .noise-edge{
+    position:fixed; inset:0; z-index:49; pointer-events:none;
+    background:linear-gradient(90deg, rgba(255,0,0,0.04), rgba(0,255,0,0.015), rgba(0,0,255,0.04));
+  }
+
+  section, header, footer{position:relative; z-index:10;}
+
+  /* ---------- Nav ---------- */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:40;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:18px 6vw;
+    background:rgba(9,0,20,0.7);
+    backdrop-filter:blur(8px);
+    border-bottom:2px solid var(--border);
+  }
+  .logo{
+    font-family:'Orbitron', sans-serif; font-weight:900; font-size:1.1rem;
+    color:var(--cyan);
+    letter-spacing:0.15em;
+    text-shadow:0 0 8px rgba(0,255,255,0.7);
+  }
+  .nav-links{display:flex; gap:28px; list-style:none;}
+  .nav-links a{
+    font-size:0.8rem; letter-spacing:0.12em;
+    color:var(--fg); opacity:0.75;
+    position:relative; padding-bottom:4px;
+    transition:color 0.2s ease-linear, opacity 0.2s ease-linear;
+  }
+  .nav-links a.active, .nav-links a:hover{
+    color:var(--cyan); opacity:1;
+    text-shadow:0 0 6px rgba(0,255,255,0.7);
+  }
+  .nav-links a.active::after{
+    content:''; position:absolute; left:0; bottom:-6px; width:100%; height:2px;
+    background:var(--cyan); box-shadow:0 0 6px var(--cyan);
+  }
+  .nav-toggle{display:none; background:none; border:2px solid var(--cyan); color:var(--cyan); padding:6px 10px; font-family:inherit;}
+
+  @media (max-width:800px){
+    .nav-links{
+      position:fixed; top:60px; right:0; left:0;
+      flex-direction:column; gap:0;
+      background:rgba(9,0,20,0.97);
+      border-bottom:2px solid var(--border);
+      max-height:0; overflow:hidden;
+      transition:max-height 0.25s ease-linear;
+    }
+    .nav-links.open{max-height:320px;}
+    .nav-links a{display:block; padding:16px 6vw; border-bottom:1px solid var(--border);}
+    .nav-toggle{display:block;}
+  }
+
+  /* ---------- Layout helpers ---------- */
+  .wrap{max-width:1100px; margin:0 auto; padding:0 6vw;}
+  section{padding:110px 0 80px;}
+  .eyebrow-line{
+    display:inline-block; font-size:0.75rem; letter-spacing:0.2em;
+    color:var(--magenta); margin-bottom:18px;
+  }
+  .section-title{
+    font-size:clamp(1.8rem, 4vw, 3rem); font-weight:900;
+    color:var(--fg); margin-bottom:14px;
+  }
+  .section-sub{
+    color:var(--fg); opacity:0.65; max-width:60ch; font-size:0.95rem; margin-bottom:48px;
+  }
+
+  /* ---------- Hero ---------- */
+  header.hero{
+    min-height:100vh; display:flex; flex-direction:column; justify-content:center;
+    padding-top:100px;
+  }
+  .terminal-line{
+    font-size:0.85rem; color:var(--cyan); margin-bottom:22px;
+    min-height:1.4em;
+  }
+  .terminal-line .cursor{display:inline-block; width:8px; height:1em; background:var(--cyan); vertical-align:middle; margin-left:3px; animation:blink 1s step-end infinite;}
+  @keyframes blink{50%{opacity:0;}}
+
+  .hero h1{
+    font-size:clamp(2.6rem, 8vw, 6rem); font-weight:900; line-height:1.03;
+    background:linear-gradient(to right, var(--orange), var(--magenta), var(--cyan));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter:drop-shadow(0 0 30px rgba(255,0,255,0.35));
+    margin-bottom:18px;
+  }
+  .hero .role{
+    font-family:'Orbitron', sans-serif; font-size:clamp(1rem, 2.4vw, 1.5rem);
+    color:var(--fg); letter-spacing:0.08em; margin-bottom:28px;
+  }
+  .hero .role span{color:var(--cyan);}
+  .hero p.blurb{max-width:56ch; opacity:0.75; font-size:0.95rem; margin-bottom:40px;}
+  .hero-actions{display:flex; gap:20px; flex-wrap:wrap;}
+
+  /* ---------- Buttons ---------- */
+  .btn{
+    display:inline-block; font-family:'Share Tech Mono', monospace;
+    text-transform:uppercase; letter-spacing:0.1em; font-size:0.82rem;
+    padding:14px 30px; border-radius:0; cursor:pointer;
+    transform:skewX(-12deg); transition:all 0.2s ease-linear; border:2px solid transparent;
+  }
+  .btn span{display:inline-block; transform:skewX(12deg);}
+  .btn-primary{border-color:var(--cyan); color:var(--cyan); background:transparent;}
+  .btn-primary:hover{background:var(--cyan); color:#000; transform:skewX(0deg); box-shadow:0 0 24px var(--cyan);}
+  .btn-secondary{border-color:var(--magenta); background:var(--magenta); color:#fff;}
+  .btn-secondary:hover{transform:skewX(0deg) scale(1.05); opacity:0.85; box-shadow:0 0 24px var(--magenta);}
+
+  /* ---------- About ---------- */
+  .about-grid{display:grid; grid-template-columns:1fr 1fr; gap:50px; align-items:start;}
+  @media (max-width:800px){.about-grid{grid-template-columns:1fr;}}
+  .about-grid p{margin-bottom:16px; line-height:1.8; font-size:0.95rem; opacity:0.85;}
+  .stat-box{
+    border:1px solid rgba(255,0,255,0.3); border-top:2px solid var(--cyan);
+    background:rgba(26,16,60,0.8); backdrop-filter:blur(6px);
+    padding:22px; margin-bottom:16px;
+  }
+  .stat-box .num{font-family:'Orbitron',sans-serif; font-size:1.8rem; color:var(--cyan); text-shadow:0 0 6px rgba(0,255,255,0.6);}
+  .stat-box .label{font-size:0.75rem; opacity:0.65; letter-spacing:0.08em; margin-top:4px;}
+
+  /* ---------- Skills ---------- */
+  .skills-cols{display:grid; grid-template-columns:repeat(3,1fr); gap:30px;}
+  @media (max-width:800px){.skills-cols{grid-template-columns:1fr;}}
+  .skill-group h3{
+    color:var(--cyan); font-size:0.95rem; letter-spacing:0.1em; margin-bottom:18px;
+    text-shadow:0 0 5px rgba(0,255,255,0.6);
+  }
+  .tag-list{display:flex; flex-wrap:wrap; gap:10px;}
+  .tag{
+    border:1px solid var(--border); padding:7px 14px; font-size:0.78rem;
+    color:var(--fg); background:rgba(45,27,78,0.3); transition:all 0.2s ease-linear;
+  }
+  .tag:hover{border-color:var(--magenta); color:var(--magenta); box-shadow:0 0 10px rgba(255,0,255,0.4);}
+
+  /* ---------- Projects ---------- */
+  .project-card{
+    border:2px solid var(--cyan); background:rgba(0,0,0,0.55);
+    box-shadow:0 0 20px rgba(0,255,255,0.12);
+    margin-bottom:34px; transition:transform 0.2s ease-linear;
+  }
+  .project-card:hover{transform:translateY(-6px);}
+  .project-titlebar{
+    display:flex; justify-content:space-between; align-items:center;
+    background:rgba(0,255,255,0.08); border-bottom:1px solid var(--cyan);
+    padding:10px 16px;
+  }
+  .dots{display:flex; gap:7px;}
+  .dot{width:11px; height:11px; border-radius:50%;}
+  .dot.d1{background:var(--magenta);} .dot.d2{background:var(--cyan);} .dot.d3{background:var(--orange);}
+  .project-titlebar .path{font-size:0.75rem; opacity:0.6;}
+  .project-body{padding:26px;}
+  .project-body h3{color:var(--cyan); font-size:1.35rem; text-shadow:0 0 5px rgba(0,255,255,0.7); margin-bottom:10px;}
+  .project-body p{opacity:0.75; font-size:0.9rem; line-height:1.7; margin-bottom:16px;}
+  .project-tags{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px;}
+  .project-tags span{font-size:0.7rem; color:var(--orange); border:1px solid rgba(255,153,0,0.4); padding:3px 9px;}
+  .project-links a{font-size:0.8rem; color:var(--magenta); margin-right:20px; border-bottom:1px solid transparent;}
+  .project-links a:hover{border-color:var(--magenta); text-shadow:0 0 6px rgba(255,0,255,0.7);}
+  .placeholder-flag{
+    font-size:0.72rem; color:var(--orange); opacity:0.85; margin-top:14px; letter-spacing:0.03em;
+  }
+
+  /* ---------- Education ---------- */
+  .edu-table{width:100%; border-collapse:collapse; margin-bottom:20px;}
+  .edu-table th, .edu-table td{
+    text-align:left; padding:14px 16px; border-bottom:1px solid var(--border); font-size:0.88rem;
+  }
+  .edu-table th{color:var(--cyan); font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; opacity:0.8;}
+  .edu-table tr:hover td{background:rgba(255,0,255,0.05);}
+
+  /* ---------- Achievements ---------- */
+  .ach-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:24px;}
+  @media (max-width:800px){.ach-grid{grid-template-columns:1fr;}}
+  .ach-card{
+    border:1px solid rgba(255,0,255,0.3); border-top:2px solid var(--orange);
+    background:rgba(26,16,60,0.8); padding:22px;
+  }
+  .ach-card h3{font-size:1.05rem; color:var(--fg); margin-bottom:6px;}
+  .ach-card .meta{font-size:0.75rem; color:var(--orange); opacity:0.9;}
+
+  /* ---------- Contact ---------- */
+  .contact-box{
+    border:2px solid var(--magenta); background:rgba(0,0,0,0.5);
+    box-shadow:0 0 50px rgba(255,0,255,0.12);
+    padding:50px 6vw; text-align:center;
+  }
+  .contact-box h2{margin-bottom:14px;}
+  .contact-box p{opacity:0.7; margin-bottom:34px; font-size:0.9rem;}
+  .contact-links{display:flex; justify-content:center; gap:20px; flex-wrap:wrap;}
+
+  footer{
+    text-align:center; padding:30px 6vw; font-size:0.72rem; opacity:0.4; border-top:1px solid var(--border);
+  }
+
+  ::selection{background:var(--magenta); color:#000;}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--cyan); outline-offset:3px;}
+</style>
+</head>
+<body>
+
+<div class="grid-floor"></div>
+<div class="sun"></div>
+<div class="noise-edge"></div>
+<div class="scanlines"></div>
+
+<nav>
+  <div class="logo">PP://</div>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">≡</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">ABOUT</a></li>
+    <li><a href="#skills">SKILLS</a></li>
+    <li><a href="#projects">PROJECTS</a></li>
+    <li><a href="#education">EDUCATION</a></li>
+    <li><a href="#achievements">ACHIEVEMENTS</a></li>
+    <li><a href="#contact">CONTACT</a></li>
+  </ul>
+</nav>
+
+<header class="hero" id="hero">
+  <div class="wrap">
+    <div class="terminal-line" id="bootLine">&gt; <span class="cursor"></span></div>
+    <h1>PIYUSH<br>PADHAN</h1>
+    <p class="blurb">Building software across the stack — from Python backends to native Android apps — and learning something new with every project.</p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn btn-primary"><span>View Projects</span></a>
+      <a href="#contact" class="btn btn-secondary"><span>Get in Touch</span></a>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <span class="eyebrow-line">01 // ABOUT</span>
+    <h2 class="section-title">Who I Am</h2>
+    <div class="about-grid">
+      <div>
+        <p>I'm a developer working across Python and Android, with hands-on experience gained through a series of online internships. I like taking a concept from a rough idea to a working build — whether that's a script that automates something tedious or an app someone can actually use.</p>
+        <p>I'm currently in my 2nd year (3rd semester) of B.Tech, still building out my portfolio — right now I'm focused on turning what I've learned in internships into projects I can point to, and picking up the tools that go with real production work.</p>
+      </div>
+      <div>
+        <div class="stat-box"><div class="num">8.2</div><div class="label">CGPA — B.TECH SEM 2</div></div>
+        <div class="stat-box"><div class="num">81%</div><div class="label">INTERMEDIATE SCORE</div></div>
+        <div class="stat-box"><div class="num">2+</div><div class="label">ONLINE INTERNSHIPS COMPLETED</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <span class="eyebrow-line">02 // SKILLS</span>
+    <h2 class="section-title">What I Work With</h2>
+    <p class="section-sub">A scan-friendly view of the languages, tools, and habits I bring to a project.</p>
+    <div class="skills-cols" id="skillsCols"></div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <span class="eyebrow-line">03 // PROJECTS</span>
+    <h2 class="section-title">Selected Work</h2>
+    <p class="section-sub">Placeholder entries below — swap these for your real projects before publishing. This section does the most convincing, so it's worth the detail.</p>
+    <div id="projectsList"></div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <span class="eyebrow-line">04 // EDUCATION</span>
+    <h2 class="section-title">Academic Background</h2>
+    <table class="edu-table">
+      <thead>
+        <tr><th>Level</th><th>Institution</th><th>Score</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>B.Tech (2nd Year, 3rd Sem) — In Progress</td><td>—</td><td>Sem 1: 7.9 CGPA · Sem 2: 8.2 CGPA</td></tr>
+        <tr><td>Intermediate</td><td>Yuvodaya, Balangir</td><td>484 / 600 — 81%</td></tr>
+        <tr><td>Matriculation</td><td>S.S.V.M Loisingha</td><td>482 / 600 — 81%</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="achievements">
+  <div class="wrap">
+    <span class="eyebrow-line">05 // ACHIEVEMENTS</span>
+    <h2 class="section-title">Certifications &amp; Recognition</h2>
+    <p class="section-sub">Only real, verifiable ones belong here. Replace the placeholders below with your actual internship completion certificates and any awards.</p>
+    <div class="ach-grid" id="achGrid"></div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-box">
+      <h2 class="section-title" style="margin-bottom:0;">Let's Talk</h2>
+      <p>Open to internship and entry-level opportunities in Python and Android development.</p>
+      <div class="contact-links">
+        <a href="mailto:iampiyushpadhan@gmail.com" class="btn btn-primary"><span>Email Me</span></a>
+        <a href="https://github.com/padhanpiyush" target="_blank" rel="noopener" class="btn btn-secondary"><span>GitHub</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  &gt; SYSTEM.PORTFOLIO — PIYUSH PADHAN — BUILT 2026
+</footer>
+
+<script>
+  // ---------- Boot line typing effect (single orchestrated intro moment) ----------
+  const bootText = "SYSTEM ONLINE — LOADING PROFILE: PIYUSH PADHAN";
+  const bootEl = document.getElementById('bootLine');
+  let i = 0;
+  function typeBoot(){
+    if(i <= bootText.length){
+      bootEl.innerHTML = '&gt; ' + bootText.slice(0, i) + '<span class="cursor"></span>';
+      i++;
+      setTimeout(typeBoot, 28);
+    }
+  }
+  typeBoot();
+
+  // ---------- Data (edit these arrays with your real content) ----------
+  const skills = [
+    { group: "Languages", items: ["Python", "Java", "Kotlin", "JavaScript"] },
+    { group: "Android Dev", items: ["Android Studio", "XML Layouts", "SQLite", "Jetpack Basics"] },
+    { group: "Tools & Practices", items: ["Git", "GitHub", "VS Code", "Problem Solving", "Self-Directed Learning"] }
+  ];
+
+  const projects = [
+    {
+      title: "Project Title 1 — Python",
+      path: "~/projects/python-project",
+      desc: "Replace with a real project: what it does, the problem it solves, and one concrete result or metric.",
+      tags: ["Python", "API"],
+      demo: "#", repo: "https://github.com/padhanpiyush",
+      placeholder: true
+    },
+    {
+      title: "Project Title 2 — Android",
+      path: "~/projects/android-project",
+      desc: "Replace with a real Android app: core feature, what you built it in, and what makes it worth a recruiter's time.",
+      tags: ["Kotlin", "Android Studio"],
+      demo: "#", repo: "https://github.com/padhanpiyush",
+      placeholder: true
+    }
+  ];
+
+  const achievements = [
+    { title: "Python Development — Internship Certificate", meta: "REPLACE WITH ISSUER & DATE" },
+    { title: "Android Development — Internship Certificate", meta: "REPLACE WITH ISSUER & DATE" }
+  ];
+
+  // ---------- Render skills ----------
+  const skillsCols = document.getElementById('skillsCols');
+  skills.forEach(g => {
+    const div = document.createElement('div');
+    div.className = 'skill-group';
+    div.innerHTML = `<h3>${g.group}</h3><div class="tag-list">${g.items.map(s => `<span class="tag">${s}</span>`).join('')}</div>`;
+    skillsCols.appendChild(div);
+  });
+
+  // ---------- Render projects ----------
+  const projectsList = document.getElementById('projectsList');
+  projects.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'project-card';
+    card.innerHTML = `
+      <div class="project-titlebar">
+        <div class="dots"><span class="dot d1"></span><span class="dot d2"></span><span class="dot d3"></span></div>
+        <span class="path">${p.path}</span>
+      </div>
+      <div class="project-body">
+        <h3>${p.title}</h3>
+        <p>${p.desc}</p>
+        <div class="project-tags">${p.tags.map(t => `<span>${t}</span>`).join('')}</div>
+        <div class="project-links">
+          <a href="${p.demo}">Live Demo →</a>
+          <a href="${p.repo}" target="_blank" rel="noopener">Source →</a>
+        </div>
+        ${p.placeholder ? '<div class="placeholder-flag">⚠ placeholder — replace before publishing</div>' : ''}
+      </div>`;
+    projectsList.appendChild(card);
+  });
+
+  // ---------- Render achievements ----------
+  const achGrid = document.getElementById('achGrid');
+  achievements.forEach(a => {
+    const card = document.createElement('div');
+    card.className = 'ach-card';
+    card.innerHTML = `<h3>${a.title}</h3><div class="meta">${a.meta}</div>`;
+    achGrid.appendChild(card);
+  });
+
+  // ---------- Mobile nav toggle ----------
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // ---------- Scrollspy ----------
+  const sections = document.querySelectorAll('section[id], header[id]');
+  const links = document.querySelectorAll('.nav-links a');
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        links.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
+        if(active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  sections.forEach(s => spy.observe(s));
+</script>
+</body>
+</html>

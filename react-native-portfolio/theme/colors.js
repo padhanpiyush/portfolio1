@@ -1,0 +1,15 @@
+export const Colors = {
+  bg: '#090014',
+  fg: '#E0E0E0',
+  card: '#1a103c',
+  cardTranslucent: 'rgba(26, 16, 60, 0.85)',
+  cardDark: 'rgba(10, 5, 25, 0.85)',
+  magenta: '#FF00FF',
+  cyan: '#00FFFF',
+  orange: '#FF9900',
+  border: '#2D1B4E',
+  borderNeon: 'rgba(255, 0, 255, 0.3)',
+  borderCyan: 'rgba(0, 255, 255, 0.4)',
+  glowCyan: 'rgba(0, 255, 255, 0.6)',
+  glowMagenta: 'rgba(255, 0, 255, 0.4)',
+};

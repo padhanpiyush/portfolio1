@@ -1,0 +1,13 @@
+{
+  "name": "piyush-padhan-portfolio",
+  "version": "1.0.0",
+  "description": "Piyush Padhan Cyberpunk Portfolio Website & React Native App",
+  "scripts": {
+    "dev": "python -m http.server 3000",
+    "start": "python -m http.server 3000",
+    "mobile": "cd react-native-portfolio && npm start"
+  },
+  "keywords": ["portfolio", "cyberpunk", "synthwave", "react-native"],
+  "author": "Piyush Padhan",
+  "license": "ISC"
+}
