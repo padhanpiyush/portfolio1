@@ -43,15 +43,7 @@ module.exports = async(req, res) => {
         return;
     }
 
-    const webhookUrl = process.env.MAKE_WEBHOOK_URL;
-
-    if (!webhookUrl) {
-        res.status(500).json({
-            success: false,
-            error: 'Make webhook is not configured yet. Add MAKE_WEBHOOK_URL in Vercel project settings.'
-        });
-        return;
-    }
+    const webhookUrl = process.env.MAKE_WEBHOOK_URL || 'https://hook.us2.make.com/gbcpcyohity8jfloux5a6ndk0qh2bl2k';
 
     try {
         const makeResponse = await fetch(webhookUrl, {
